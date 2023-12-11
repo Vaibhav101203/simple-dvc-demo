@@ -45,6 +45,11 @@ def get_schema(schema_path=schema_path):
     return schema
 
 def validate_input(dict_request):
+    
+    for col, val in dict_request.items():
+        _validate_cols(col)
+        _validate_values(col, val)
+
     def _validate_cols(col):
         schema = get_schema()
         actual_cols = schema.keys()
@@ -57,9 +62,6 @@ def validate_input(dict_request):
         if not (schema[col]["min"] <= float(dict_request[col]) <= schema[col]["max"]) :
             raise NotInRange
 
-    for col, val in dict_request.items():
-        _validate_cols(col)
-        _validate_values(col, val)
     
     return True
 
